@@ -28,10 +28,7 @@ public class Task {
 
     @Override
     public int hashCode() {
-        int result = Objects.hashCode(title);
-        result = result + 31 * Objects.hashCode(description);
-        result = result + 7 * id;
-        return result;
+        return 7 + 31 * Objects.hashCode(title);
     }
 
     @Override

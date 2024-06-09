@@ -1,10 +1,18 @@
 import java.util.Objects;
 
 public class Subtask extends Task {
-    public int epicId;
+    private int epicId;
 
     public Subtask(String title, String description, Status status) {
         super(title, description, status);
+    }
+
+    public int getEpicId() {
+        return epicId;
+    }
+
+    public void setEpicId(int epicId) {
+        this.epicId = epicId;
     }
 
     @Override
@@ -18,9 +26,7 @@ public class Subtask extends Task {
 
     @Override
     public int hashCode() {
-        int result = Objects.hashCode(title);
-        result = result + 31 * Objects.hashCode(description);
-        result = result + 31 * Objects.hashCode(id);
+        int result = 31 + 7 * Objects.hashCode(title);
         result = result + 31 * epicId;
         return result;
     }

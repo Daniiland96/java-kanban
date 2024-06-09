@@ -15,7 +15,7 @@ public class Main {
             int cmd = scanner.nextInt();
             switch (cmd) {
                 case 1:
-                    System.out.println(manager.getTitleAllTasks());
+                    System.out.println(manager.getAllTasksAndEpic());
                     break;
                 case 2:
                     manager.deleteAllTasks();
@@ -59,7 +59,7 @@ public class Main {
                 case 11:
                     System.out.print("Введите id Epic, подзадачи которого хотите посмотреть: ");
                     int epicIdShowSubtask = scanner.nextInt();
-                    System.out.println(manager.getTitleEpicSubtasks(epicIdShowSubtask));
+                    System.out.println(manager.getEpicsSubtasks(epicIdShowSubtask));
                     break;
                 case 12:
                     return;
