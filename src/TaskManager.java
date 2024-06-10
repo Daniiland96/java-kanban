@@ -44,24 +44,14 @@ public class TaskManager {
     }
 
     public void createTask(Task newTask) {
-        if (tasks.containsValue(newTask)) {
-            System.out.println("Такой Task уже существует.");
-
-        } else {
-            newTask.id = generateAllTaskId();
-            tasks.put(newTask.id, newTask);
-        }
+        newTask.id = generateAllTaskId();
+        tasks.put(newTask.id, newTask);
     }
 
     public void createEpic(Epic newEpic) {
-        if (epics.containsValue(newEpic)) {
-            System.out.println("Такой Epic уже существует.");
-
-        } else {
-            newEpic.id = generateAllTaskId();
-            epics.put(newEpic.id, newEpic);
-            updateEpicStatus(newEpic.id);
-        }
+        newEpic.id = generateAllTaskId();
+        epics.put(newEpic.id, newEpic);
+        updateEpicStatus(newEpic.id);
     }
 
     public void createSubtask(int epicId, Subtask newSubtask) {
@@ -70,15 +60,11 @@ public class TaskManager {
 
         } else if (epics.containsKey(epicId)) {
             newSubtask.setEpicId(epicId);
-            if (subtasks.containsValue(newSubtask)) {
-                System.out.println("Такой Subtask уже существует в указанном Epic.");
-            } else {
-                newSubtask.id = generateAllTaskId();
-                subtasks.put(newSubtask.id, newSubtask);
-                Epic epic = epics.get(epicId);
-                epic.getArraySubtask().add(newSubtask.id);
-                updateEpicStatus(epicId);
-            }
+            newSubtask.id = generateAllTaskId();
+            subtasks.put(newSubtask.id, newSubtask);
+            Epic epic = epics.get(epicId);
+            epic.getArraySubtask().add(newSubtask.id);
+            updateEpicStatus(epicId);
 
         } else {
             System.out.println("Epic, с указанным id, не найден.");

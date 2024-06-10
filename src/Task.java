@@ -23,12 +23,12 @@ public class Task {
         if (o == null || getClass() != o.getClass()) return false;
 
         Task task = (Task) o;
-        return Objects.equals(title, task.title);
+        return id == task.id;
     }
 
     @Override
     public int hashCode() {
-        return 7 + 31 * Objects.hashCode(title);
+        return id;
     }
 
     @Override
