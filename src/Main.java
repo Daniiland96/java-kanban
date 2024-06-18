@@ -8,7 +8,7 @@ public class Main {
         System.out.println();
         // Интерфейс пользователя
 
-        TaskManager manager = new TaskManager();
+        TaskManager manager = Managers.getDefault();
 
         while (true) {
             printMenu();
@@ -62,6 +62,9 @@ public class Main {
                     System.out.println(manager.getEpicsSubtasks(epicIdShowSubtask));
                     break;
                 case 12:
+                    System.out.println(manager.getHistory());
+                    break;
+                case 13:
                     return;
                 default:
                     System.out.println("Введена неизвестная команда.");
@@ -85,7 +88,8 @@ public class Main {
         System.out.println("9 - Обновить задачу типа Subtask.");
         System.out.println("10 - Удалить задачу по ее идентификатору.");
         System.out.println("11 - Получить для Epic список его подзадач Subtask.");
-        System.out.println("12 - Выход.");
+        System.out.println("12 - Получить историю просмотров.");
+        System.out.println("13 - Выход.");
     }
 
     static public Task createNewTask() {
