@@ -15,8 +15,8 @@ class InMemoryTaskManagerTest {
     void CreateInMemoryTaskManagerTest() {
         InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
         taskManager = new InMemoryTaskManager(historyManager);
-        task = new Task("model.Task", "TaskType", Status.NEW);
-        epic = new Epic("model.Epic", "EpicType");
+        task = new Task("Task", "TaskType", Status.NEW);
+        epic = new Epic("Epic", "EpicType");
     }
 
     @Test
@@ -38,13 +38,13 @@ class InMemoryTaskManagerTest {
 
     @Test
     void taskManagerCreateAllTypeTaskAndReturnById() {
-        Subtask subtask = new Subtask("model.Subtask", "SubtaskType", Status.NEW);
+        Subtask subtask = new Subtask("Subtask", "SubtaskType", Status.NEW);
         taskManager.createTask(task); // id = 1
         taskManager.createEpic(epic); // id = 2
         taskManager.createSubtask(2, subtask); // id = 3
-        assertEquals(taskManager.getAnyTaskById(1).title, "model.Task");
-        assertEquals(taskManager.getAnyTaskById(2).title, "model.Epic");
-        assertEquals(taskManager.getAnyTaskById(3).title, "model.Subtask");
+        assertEquals(taskManager.getAnyTaskById(1).title, "Task");
+        assertEquals(taskManager.getAnyTaskById(2).title, "Epic");
+        assertEquals(taskManager.getAnyTaskById(3).title, "Subtask");
     }
 
     @Test
@@ -57,7 +57,7 @@ class InMemoryTaskManagerTest {
     @Test
     void taskManagerDoesNotChangeFields() {
         taskManager.createTask(task);
-        assertEquals(taskManager.getAnyTaskById(1).title, "model.Task");
+        assertEquals(taskManager.getAnyTaskById(1).title, "Task");
         assertEquals(taskManager.getAnyTaskById(1).description, "TaskType");
         assertEquals(taskManager.getAnyTaskById(1).status, Status.NEW);
     }

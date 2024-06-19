@@ -16,7 +16,7 @@ class ManagersTest {
 
     @Test
     void managersCreateWorkerTaskManager() {
-        Task task = new Task("model.Task", "model.Task", Status.NEW);
+        Task task = new Task("Task", "Task", Status.NEW);
         taskManager.createTask(task);
         taskManager.getAnyTaskById(1);
         assertEquals(taskManager.tasks.size(), 1); // в tasks должен появиться 1 элемент
