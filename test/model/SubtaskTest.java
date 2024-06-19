@@ -1,6 +1,7 @@
-import org.junit.jupiter.api.Test;
+package model;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 class SubtaskTest {
     @Test
@@ -9,6 +10,6 @@ class SubtaskTest {
         subtask1.id = 1;
         Subtask subtask2 = new Subtask("Subtask2", "SubtaskSecond", Status.DONE);
         subtask2.id = 1;
-        assertEquals(subtask1, subtask2);
+        Assertions.assertEquals(subtask1, subtask2);
     }
 }

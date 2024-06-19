@@ -1,3 +1,6 @@
+package service;
+
+import model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -12,8 +15,8 @@ class ManagersTest {
     }
 
     @Test
-    void managersCreateWorkerTaskManager(){
-        Task task = new Task("Task", "Task", Status.NEW);
+    void managersCreateWorkerTaskManager() {
+        Task task = new Task("model.Task", "model.Task", Status.NEW);
         taskManager.createTask(task);
         taskManager.getAnyTaskById(1);
         assertEquals(taskManager.tasks.size(), 1); // в tasks должен появиться 1 элемент

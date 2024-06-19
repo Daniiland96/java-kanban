@@ -1,6 +1,7 @@
-import org.junit.jupiter.api.Test;
+package model;
 
-import static org.junit.jupiter.api.Assertions.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 class EpicTest {
     @Test
@@ -9,6 +10,6 @@ class EpicTest {
         epic1.id = 1;
         Epic epic2 = new Epic("Epic2", "EpicSecond");
         epic2.id = 1;
-        assertEquals(epic1, epic2);
+        Assertions.assertEquals(epic1, epic2);
     }
 }

@@ -1,3 +1,5 @@
+import model.*;
+import service.*;
 import java.util.Scanner;
 
 public class Main {
@@ -32,22 +34,22 @@ public class Main {
                     manager.createEpic(createNewEpic());
                     break;
                 case 6:
-                    System.out.print("Введите id Epic, которому будет принадлежать Subtask: ");
+                    System.out.print("Введите id model.Epic, которому будет принадлежать model.Subtask: ");
                     int epicId = scanner.nextInt();
                     manager.createSubtask(epicId, createNewSubtask());
                     break;
                 case 7:
-                    System.out.print("Введите id Task, который хотите обновить: ");
+                    System.out.print("Введите id model.Task, который хотите обновить: ");
                     int oldTaskId = scanner.nextInt();
                     manager.updateTask(oldTaskId, createNewTask());
                     break;
                 case 8:
-                    System.out.print("Введите id Epic, который хотите обновить: ");
+                    System.out.print("Введите id model.Epic, который хотите обновить: ");
                     int oldEpicId = scanner.nextInt();
                     manager.updateEpic(oldEpicId, createNewEpic());
                     break;
                 case 9:
-                    System.out.print("Введите id Subtask, который хотите обновить: ");
+                    System.out.print("Введите id model.Subtask, который хотите обновить: ");
                     int oldSubtaskId = scanner.nextInt();
                     manager.updateSubtask(oldSubtaskId, createNewSubtask());
                     break;
@@ -57,7 +59,7 @@ public class Main {
                     manager.deleteAnyTaskById(deleteId);
                     break;
                 case 11:
-                    System.out.print("Введите id Epic, подзадачи которого хотите посмотреть: ");
+                    System.out.print("Введите id model.Epic, подзадачи которого хотите посмотреть: ");
                     int epicIdShowSubtask = scanner.nextInt();
                     System.out.println(manager.getEpicsSubtasks(epicIdShowSubtask));
                     break;
@@ -80,14 +82,14 @@ public class Main {
         System.out.println("1 - Получить список всех задач.");
         System.out.println("2 - Удалить все задачи.");
         System.out.println("3 - Получить задачу по ее идентификатору.");
-        System.out.println("4 - Создать задачу типа Task.");
-        System.out.println("5 - Создать задачу типа Epic.");
-        System.out.println("6 - Создать задачу типа Subtask.");
-        System.out.println("7 - Обновить задачу типа Task.");
-        System.out.println("8 - Обновить задачу типа Epic.");
-        System.out.println("9 - Обновить задачу типа Subtask.");
+        System.out.println("4 - Создать задачу типа model.Task.");
+        System.out.println("5 - Создать задачу типа model.Epic.");
+        System.out.println("6 - Создать задачу типа model.Subtask.");
+        System.out.println("7 - Обновить задачу типа model.Task.");
+        System.out.println("8 - Обновить задачу типа model.Epic.");
+        System.out.println("9 - Обновить задачу типа model.Subtask.");
         System.out.println("10 - Удалить задачу по ее идентификатору.");
-        System.out.println("11 - Получить для Epic список его подзадач Subtask.");
+        System.out.println("11 - Получить для model.Epic список его подзадач model.Subtask.");
         System.out.println("12 - Получить историю просмотров.");
         System.out.println("13 - Выход.");
     }

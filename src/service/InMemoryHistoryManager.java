@@ -1,17 +1,19 @@
+package service;
+
+import model.Task;
 import java.util.ArrayList;
 import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    private List<Task> listTask = new ArrayList<>(10);
+    private final int historySize = 10;
+    private List<Task> listTask = new ArrayList<>(historySize);
 
     @Override
     public void add(Task task) {
-        if (listTask.size() == 10) {
+        if (listTask.size() == historySize) {
             listTask.removeFirst();
-            listTask.add(task);
-        } else {
-            listTask.add(task);
         }
+        listTask.add(task);
     }
 
     @Override

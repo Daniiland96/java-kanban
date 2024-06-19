@@ -1,3 +1,6 @@
+package service;
+
+import model.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -71,7 +74,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public void createSubtask(int epicId, Subtask newSubtask) {
         if (epics.isEmpty()) {
-            System.out.println("Нельзя создать Subtask, пока нет ни одного Epic.");
+            System.out.println("Нельзя создать model.Subtask, пока нет ни одного model.Epic.");
 
         } else if (epics.containsKey(epicId)) {
             newSubtask.setEpicId(epicId);
@@ -82,7 +85,7 @@ public class InMemoryTaskManager implements TaskManager {
             updateEpicStatus(epicId);
 
         } else {
-            System.out.println("Epic, с указанным id, не найден.");
+            System.out.println("model.Epic, с указанным id, не найден.");
         }
     }
 
@@ -93,7 +96,7 @@ public class InMemoryTaskManager implements TaskManager {
             tasks.put(taskId, newTask);
 
         } else {
-            System.out.println("Task, с указанным id, не найден.");
+            System.out.println("model.Task, с указанным id, не найден.");
         }
     }
 
@@ -107,14 +110,14 @@ public class InMemoryTaskManager implements TaskManager {
             updateEpicStatus(epicId);
 
         } else {
-            System.out.println("Epic, с указанным id, не найден.");
+            System.out.println("model.Epic, с указанным id, не найден.");
         }
     }
 
     @Override
     public void updateSubtask(int subtaskId, Subtask newSubtask) {
         if (epics.isEmpty()) {
-            System.out.println("Список Epic и Subtask пуст.");
+            System.out.println("Список model.Epic и model.Subtask пуст.");
 
         } else if (subtasks.containsKey(subtaskId)) {
             newSubtask.id = subtaskId;
@@ -124,7 +127,7 @@ public class InMemoryTaskManager implements TaskManager {
             updateEpicStatus(newSubtask.getEpicId());
 
         } else {
-            System.out.println("Subtask, с указанным id, не найден.");
+            System.out.println("model.Subtask, с указанным id, не найден.");
         }
     }
 
