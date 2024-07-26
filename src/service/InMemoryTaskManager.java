@@ -1,6 +1,7 @@
 package service;
 
 import model.*;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -178,6 +179,11 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public List<Task> getHistory() {
         return historyManager.getHistory();
+    }
+
+    @Override
+    public void removeTaskFromHistory(int id) {
+        historyManager.remove(id);
     }
 
     private void updateEpicStatus(int epicId) {
