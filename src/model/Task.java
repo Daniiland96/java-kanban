@@ -34,10 +34,10 @@ public class Task {
     @Override
     public String toString() {
         return getClass() + "{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
-                ", status=" + status +
+                "id = " + id +
+                ", title = '" + title + '\'' +
+                ", description = '" + description + '\'' +
+                ", status = " + status +
                 '}';
     }
 }

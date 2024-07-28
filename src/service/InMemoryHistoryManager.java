@@ -9,8 +9,6 @@ import java.util.List;
 import java.util.Map;
 
 public class InMemoryHistoryManager implements HistoryManager {
-    //private final int historySize = 10;
-    //private List<Task> listTask = new ArrayList<>();
     private Map<Integer, Node> nodeStore = new HashMap<>();
     SmartLinkedList smartLinkedList = new SmartLinkedList();
 
@@ -18,6 +16,7 @@ public class InMemoryHistoryManager implements HistoryManager {
     public void add(Task task) {
         if (nodeStore.containsKey(task.id)) {
             Node node = nodeStore.get(task.id);
+            node.task = task;
             removeNode(node);
             smartLinkedList.linkLast(node);
         } else {
@@ -41,25 +40,40 @@ public class InMemoryHistoryManager implements HistoryManager {
     }
 
     private void removeNode(Node node) {
-        Node prevNode = node.previous;
-        Node nextNode = node.next;
-        if (prevNode != null) prevNode.next = nextNode;
-        if (nextNode != null) nextNode.previous = prevNode;
-        // не получится принудительно удалить единственный элемент ???
+        if (node.equals(smartLinkedList.head)) {
+            if (node.equals(smartLinkedList.tail)) {
+                smartLinkedList.head = null;
+                smartLinkedList.tail = null;
+            } else {
+                Node nextNode = node.next;
+                nextNode.previous = null;
+                smartLinkedList.head = nextNode;
+            }
+        } else if (node.equals(smartLinkedList.tail)) {
+            Node prevNode = node.previous;
+            prevNode.next = null;
+            smartLinkedList.tail = prevNode;
+        } else {
+            Node prevNode = node.previous;
+            Node nextNode = node.next;
+            prevNode.next = nextNode;
+            nextNode.previous = prevNode;
+        }
     }
 
-    class SmartLinkedList {
+    static class SmartLinkedList {
         private Node head = null;
         private Node tail = null;
 
-        private void linkLast(Node newNode) {
+        private void linkLast(Node node) {
             if (head == null) {
-                head = newNode;
-                tail = newNode;
+                head = node;
+                tail = node;
             } else {
-                newNode.previous = tail;
-                tail.next = newNode;
-                tail = newNode;
+                node.previous = tail;
+                node.next = null;
+                tail.next = node;
+                tail = node;
             }
         }
 

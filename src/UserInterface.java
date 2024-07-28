@@ -1,11 +1,12 @@
 import model.*;
 import service.TaskManager;
+
 import java.util.Scanner;
 
 public class UserInterface {
     static Scanner scanner = new Scanner(System.in);
 
-    static public void useInterface(TaskManager manager) {
+    public static void useInterface(TaskManager manager) {
         while (true) {
             printMenu();
             int cmd = scanner.nextInt();
@@ -75,7 +76,7 @@ public class UserInterface {
         }
     }
 
-    static public void printMenu() {
+    public static void printMenu() {
         System.out.println();
         System.out.println("Введите одну из возможных команд:");
         System.out.println("1 - Получить список всех задач.");
@@ -94,7 +95,7 @@ public class UserInterface {
         System.out.println("14 - Выход.");
     }
 
-    static public Task createNewTask() {
+    public static Task createNewTask() {
         scanner.nextLine();
         System.out.print("Введите имя: ");
         String title = scanner.nextLine();
@@ -113,7 +114,7 @@ public class UserInterface {
         return new Task(title.trim(), description.trim(), status);
     }
 
-    static public Epic createNewEpic() {
+    public static Epic createNewEpic() {
         scanner.nextLine();
         System.out.print("Введите имя: ");
         String title = scanner.nextLine();
@@ -122,7 +123,7 @@ public class UserInterface {
         return new Epic(title.trim(), description.trim());
     }
 
-    static public Subtask createNewSubtask() {
+    public static Subtask createNewSubtask() {
         scanner.nextLine();
         System.out.print("Введите имя: ");
         String title = scanner.nextLine();
@@ -141,7 +142,7 @@ public class UserInterface {
         return new Subtask(title.trim(), description.trim(), status);
     }
 
-    static public Status getStatus() {
+    public static Status getStatus() {
         System.out.println("1 - NEW");
         System.out.println("2 - IN_PROGRESS");
         System.out.println("3 - DONE");
