@@ -12,7 +12,7 @@ class InMemoryTaskManagerTest {
     Epic epic;
 
     @BeforeEach
-    void CreateInMemoryTaskManagerTest() {
+    void createTaskManagerTest() {
         InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
         taskManager = new InMemoryTaskManager(historyManager);
         task = new Task("Task", "TaskType", Status.NEW);
