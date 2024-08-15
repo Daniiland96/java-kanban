@@ -33,11 +33,6 @@ public class Task {
 
     @Override
     public String toString() {
-        return getClass() + "{" +
-                "id = " + id +
-                ", title = '" + title + '\'' +
-                ", description = '" + description + '\'' +
-                ", status = " + status +
-                '}';
+        return String.format("%s,%s,%s,%s,%s\n", id, typeTask, title, status, description);
     }
 }

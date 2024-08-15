@@ -20,12 +20,15 @@ public class Epic extends Task {
 
     @Override
     public String toString() {
-        return getClass() + "{" +
-                "id = " + id +
-                ", title = '" + title + '\'' +
-                ", description = '" + description + '\'' +
-                ", status = " + status +
-                ", arraySubtask = " + arraySubtask +
-                '}';
+        String subtaskList = "empty";
+        if (!arraySubtask.isEmpty()) {
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < (arraySubtask.size() - 1); i++) {
+                builder.append(arraySubtask.get(i)).append("/");
+            }
+            builder.append(arraySubtask.getLast());
+            subtaskList = builder.toString();
+        }
+        return String.format("%s,%s,%s,%s,%s,%s\n", id, typeTask, title, status, description, subtaskList);
     }
 }

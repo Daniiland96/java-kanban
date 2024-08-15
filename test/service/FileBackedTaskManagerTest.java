@@ -23,13 +23,13 @@ public class FileBackedTaskManagerTest extends InMemoryTaskManagerTest {
             task = new Task("Task", "TaskType", Status.NEW);
             epic = new Epic("Epic", "EpicType");
         } catch (IOException e) {
-            System.out.println("Ошибка создания временного файла.");
+            throw new ManagerSaveException("Ошибка создания временного файла.");
         }
     }
 
     @Test
     public void loadEmptyFile() {
-        ArrayList<Task> tasks = taskManager.getAllTasksAndEpic();
+        ArrayList<Task> tasks = taskManager.getAllTasks();
         assertEquals(0, tasks.size());
     }
 
@@ -38,12 +38,12 @@ public class FileBackedTaskManagerTest extends InMemoryTaskManagerTest {
         taskManager.createTask(task);
         taskManager.createEpic(epic);
         String fileString = Files.readString(taskFile.toPath());
-        String str = "id,type,name,status,description,epic\n1,TASK,Task,NEW,TaskType\n2,EPIC,Epic,NEW,EpicType,empty\n"; // вынести отдельно;
+        String str = "id,type,name,status,description,epic\n1,TASK,Task,NEW,TaskType\n2,EPIC,Epic,NEW,EpicType,empty\n";
         assertEquals(str, fileString);
     }
 
     @Test
-    public void loadFromFile () {
+    public void loadFromFile() {
         taskManager.createTask(task);
         taskManager.createEpic(epic);
         FileBackedTaskManager taskManager2 = FileBackedTaskManager.loadFromFile(taskFile);

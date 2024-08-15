@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface TaskManager {
 
-    ArrayList<Task> getAllTasksAndEpic();
+    ArrayList<Task> getAllTasks();
 
     void deleteAllTasks();
 

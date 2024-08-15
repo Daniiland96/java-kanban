@@ -4,7 +4,6 @@ import model.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
@@ -18,27 +17,21 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     private void save() {
         try (BufferedWriter buffer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
             buffer.write("id,type,name,status,description,epic\n");
-            if (!tasks.isEmpty()) {
-                for (Task task : tasks.values()) {
-                    buffer.write(taskToString(task));
-                }
-            }
-            if (!epics.isEmpty()) {
-                for (Epic task : epics.values()) {
-                    buffer.write(epicToString(task));
-                }
-            }
-            if (!subtasks.isEmpty()) {
-                for (Subtask task : subtasks.values()) {
-                    buffer.write(subtaskToString(task));
+            for (Task task : getAllTasks()) {
+                if (TypeTask.TASK.equals(task.typeTask)) {
+                    buffer.write(task.toString());
+                } else if (TypeTask.EPIC.equals(task.typeTask)) {
+                    buffer.write(task.toString());
+                } else if (TypeTask.SUBTASK.equals(task.typeTask)) {
+                    buffer.write(task.toString());
+                } else {
+                    throw new ManagerSaveException("Передан неверный тип задачи.");
                 }
             }
         } catch (FileNotFoundException e) {
             throw new ManagerSaveException("Файл не найден.");
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка сохранения в файле.");
-        } catch (ManagerSaveException e) {
-            System.out.println(e.getMessage());
         }
     }
 
@@ -73,8 +66,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
             throw new ManagerSaveException("Ошибка сохранения в файле.");
         } catch (NumberFormatException e) {
             throw new ManagerSaveException("Передан неверный формат.");
-        } catch (ManagerSaveException e) {
-            System.out.println(e.getMessage());
         }
         return manager;
     }
@@ -106,31 +97,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         subtask.id = Integer.parseInt(parts[0]);
         subtask.setEpicId(Integer.parseInt(parts[5]));
         return subtask;
-    }
-
-    private String taskToString(Task task) {
-        return String.format("%s,%s,%s,%s,%s\n", task.id, task.typeTask, task.title, task.status,
-                task.description);
-    }
-
-    private String epicToString(Epic task) {
-        String subtaskList = "empty";
-        if (!task.getArraySubtask().isEmpty()) {
-            List<Integer> array = task.getArraySubtask();
-            StringBuilder builder = new StringBuilder();
-            for (int i = 0; i < (array.size() - 1); i++) {
-                builder.append(array.get(i)).append("/");
-            }
-            builder.append(array.getLast());
-            subtaskList = builder.toString();
-        }
-        return String.format("%s,%s,%s,%s,%s,%s\n", task.id, task.typeTask, task.title, task.status,
-                task.description, subtaskList);
-    }
-
-    private String subtaskToString(Subtask task) {
-        return String.format("%s,%s,%s,%s,%s,%s\n", task.id, task.typeTask, task.title, task.status,
-                task.description, task.getEpicId());
     }
 
     @Override

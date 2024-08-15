@@ -8,23 +8,27 @@ public class Main {
 
     public static void main(String[] args) {
 
-        //UserInterface.useInterface(manager); // готовый интерфейс пользователя
-        //TaskManager manager = Managers.getDefault();
+        //UserInterface.useInterface(backedTaskManager); // готовый интерфейс пользователя
         File file = new File("manager.csv");
-        TaskManager manager = FileBackedTaskManager.loadFromFile(file);
+
+        TaskManager taskManager = Managers.getDefault();
+        TaskManager backedTaskManager = Managers.getDefault(file);
 
         Task task = new Task("Task", "description", Status.NEW);
         Epic epic = new Epic("Epic", "description");
         Subtask subtask = new Subtask("Subtask", "description", Status.IN_PROGRESS);
+        Subtask subtask2 = new Subtask("Subtask2", "description", Status.IN_PROGRESS);
 
-        manager.createTask(task);
-        manager.createEpic(epic);
-        manager.createSubtask(epic.id, subtask);
+        backedTaskManager.createTask(task);
+        backedTaskManager.createEpic(epic);
+        backedTaskManager.createSubtask(epic.id, subtask);
+        backedTaskManager.createSubtask(epic.id, subtask2);
 
-        TaskManager manager2 = FileBackedTaskManager.loadFromFile(file);
+        TaskManager manager2 = Managers.getDefault(file);
 
-        System.out.println(manager.getAnyTaskById(task.id).equals(manager2.getAnyTaskById(task.id)));
-        System.out.println(manager.getAnyTaskById(epic.id).equals(manager2.getAnyTaskById(epic.id)));
-        System.out.println(manager.getAnyTaskById(subtask.id).equals(manager2.getAnyTaskById(subtask.id)));
+        System.out.println(backedTaskManager.getAnyTaskById(task.id).equals(manager2.getAnyTaskById(task.id)));
+        System.out.println(backedTaskManager.getAnyTaskById(epic.id).equals(manager2.getAnyTaskById(epic.id)));
+        System.out.println(backedTaskManager.getAnyTaskById(subtask.id).equals(manager2.getAnyTaskById(subtask.id)));
+        System.out.println(backedTaskManager.getAnyTaskById(subtask2.id).equals(manager2.getAnyTaskById(subtask2.id)));
     }
 }
