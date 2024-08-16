@@ -29,6 +29,6 @@ public class Epic extends Task {
             builder.append(arraySubtask.getLast());
             subtaskList = builder.toString();
         }
-        return String.format("%s,%s,%s,%s,%s,%s\n", id, typeTask, title, status, description, subtaskList);
+        return String.format("%s,%s,%s,%s,%s,%s", id, typeTask, title, status, description, subtaskList);
     }
 }

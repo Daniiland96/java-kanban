@@ -33,6 +33,6 @@ public class Task {
 
     @Override
     public String toString() {
-        return String.format("%s,%s,%s,%s,%s\n", id, typeTask, title, status, description);
+        return String.format("%s,%s,%s,%s,%s", id, typeTask, title, status, description);
     }
 }

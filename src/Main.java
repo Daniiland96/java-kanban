@@ -8,10 +8,8 @@ public class Main {
 
     public static void main(String[] args) {
 
-        //UserInterface.useInterface(backedTaskManager); // готовый интерфейс пользователя
         File file = new File("manager.csv");
 
-        TaskManager taskManager = Managers.getDefault();
         TaskManager backedTaskManager = Managers.getDefault(file);
 
         Task task = new Task("Task", "description", Status.NEW);

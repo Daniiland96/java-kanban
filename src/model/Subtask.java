@@ -18,6 +18,6 @@ public class Subtask extends Task {
 
     @Override
     public String toString() {
-        return String.format("%s,%s,%s,%s,%s,%s\n", id, typeTask, title, status, description, getEpicId());
+        return String.format("%s,%s,%s,%s,%s,%s", id, typeTask, title, status, description, getEpicId());
     }
 }

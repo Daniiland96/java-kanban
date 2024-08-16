@@ -18,15 +18,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         try (BufferedWriter buffer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
             buffer.write("id,type,name,status,description,epic\n");
             for (Task task : getAllTasks()) {
-                if (TypeTask.TASK.equals(task.typeTask)) {
-                    buffer.write(task.toString());
-                } else if (TypeTask.EPIC.equals(task.typeTask)) {
-                    buffer.write(task.toString());
-                } else if (TypeTask.SUBTASK.equals(task.typeTask)) {
-                    buffer.write(task.toString());
-                } else {
-                    throw new ManagerSaveException("Передан неверный тип задачи.");
-                }
+                buffer.write(task.toString() + "\n");
             }
         } catch (FileNotFoundException e) {
             throw new ManagerSaveException("Файл не найден.");
