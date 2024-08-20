@@ -5,6 +5,7 @@ public class Task {
     public String title;
     public String description;
     public Status status;
+    public final TypeTask typeTask = TypeTask.TASK;
 
     public Task(String title, String description, Status status) {
         this.title = title;
@@ -21,7 +22,6 @@ public class Task {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Task task = (Task) o;
         return id == task.id;
     }
@@ -33,11 +33,6 @@ public class Task {
 
     @Override
     public String toString() {
-        return getClass() + "{" +
-                "id = " + id +
-                ", title = '" + title + '\'' +
-                ", description = '" + description + '\'' +
-                ", status = " + status +
-                '}';
+        return String.format("%s,%s,%s,%s,%s", id, typeTask, title, status, description);
     }
 }

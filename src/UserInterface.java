@@ -12,7 +12,7 @@ public class UserInterface {
             int cmd = scanner.nextInt();
             switch (cmd) {
                 case 1:
-                    System.out.println(manager.getAllTasksAndEpic());
+                    System.out.println(manager.getAllTasks());
                     break;
                 case 2:
                     manager.deleteAllTasks();

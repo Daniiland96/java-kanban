@@ -2,87 +2,31 @@ import model.*;
 
 import service.*;
 
+import java.io.File;
+
 public class Main {
 
     public static void main(String[] args) {
 
-        TaskManager manager = Managers.getDefault();
-        // UserInterface.useInterface(manager); // готовый интерфейс пользователя
+        File file = new File("manager.csv");
 
-        Task task1 = new Task("Task1", "t1", Status.NEW);
-        Task task2 = new Task("Task2", "t2", Status.IN_PROGRESS);
-        Epic epic3 = new Epic("Epic3", "e3");
-        Subtask subtask3Id4 = new Subtask("Subtask3_4", "s3_4", Status.IN_PROGRESS);
-        Subtask subtask3Id5 = new Subtask("Subtask3_5", "s3_5", Status.IN_PROGRESS);
-        Subtask subtask3Id6 = new Subtask("Subtask3_6", "s3_6", Status.IN_PROGRESS);
-        Epic epic7 = new Epic("Epic7", "e7");
+        TaskManager backedTaskManager = Managers.getDefault(file);
 
-        manager.createTask(task1);
-        manager.createTask(task2);
-        manager.createEpic(epic3);
-        manager.createSubtask(3, subtask3Id4);
-        manager.createSubtask(3, subtask3Id5);
-        manager.createSubtask(3, subtask3Id6);
-        manager.createEpic(epic7);
+        Task task = new Task("Task", "description", Status.NEW);
+        Epic epic = new Epic("Epic", "description");
+        Subtask subtask = new Subtask("Subtask", "description", Status.IN_PROGRESS);
+        Subtask subtask2 = new Subtask("Subtask2", "description", Status.IN_PROGRESS);
 
-        manager.getAnyTaskById(task1.id);
-        System.out.println(manager.getHistory());
-        System.out.println();
+        backedTaskManager.createTask(task);
+        backedTaskManager.createEpic(epic);
+        backedTaskManager.createSubtask(epic.id, subtask);
+        backedTaskManager.createSubtask(epic.id, subtask2);
 
-        manager.getAnyTaskById(task1.id);
-        System.out.println(manager.getHistory());
-        System.out.println();
+        TaskManager manager2 = Managers.getDefault(file);
 
-        manager.getAnyTaskById(epic3.id);
-        System.out.println(manager.getHistory());
-        System.out.println();
-
-        manager.getAnyTaskById(task2.id);
-        System.out.println(manager.getHistory());
-        System.out.println();
-
-        manager.getAnyTaskById(epic3.id);
-        System.out.println(manager.getHistory());
-        System.out.println();
-
-        manager.getAnyTaskById(subtask3Id4.id);
-        System.out.println(manager.getHistory());
-        System.out.println();
-
-        manager.getAnyTaskById(epic7.id);
-        System.out.println(manager.getHistory());
-        System.out.println();
-
-        manager.getAnyTaskById(subtask3Id4.id);
-        System.out.println(manager.getHistory());
-        System.out.println();
-
-        manager.getAnyTaskById(subtask3Id5.id);
-        System.out.println(manager.getHistory());
-        System.out.println();
-
-        manager.getAnyTaskById(subtask3Id6.id);
-        System.out.println(manager.getHistory());
-        System.out.println();
-
-        //remove
-
-        manager.removeTaskFromHistory(task1.id);
-        System.out.println(manager.getHistory());
-        System.out.println();
-
-        manager.removeTaskFromHistory(epic7.id);
-        System.out.println(manager.getHistory());
-        System.out.println();
-
-        //delete
-
-        manager.deleteAnyTaskById(epic3.id);
-        System.out.println(manager.getHistory());
-        System.out.println();
-
-        manager.deleteAnyTaskById(task2.id);
-        System.out.println(manager.getHistory());
-        System.out.println();
+        System.out.println(backedTaskManager.getAnyTaskById(task.id).equals(manager2.getAnyTaskById(task.id)));
+        System.out.println(backedTaskManager.getAnyTaskById(epic.id).equals(manager2.getAnyTaskById(epic.id)));
+        System.out.println(backedTaskManager.getAnyTaskById(subtask.id).equals(manager2.getAnyTaskById(subtask.id)));
+        System.out.println(backedTaskManager.getAnyTaskById(subtask2.id).equals(manager2.getAnyTaskById(subtask2.id)));
     }
 }
