@@ -1,10 +1,14 @@
 package model;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class Epic extends Task {
     public final TypeTask typeTask = TypeTask.EPIC;
     private ArrayList<Integer> arraySubtask = new ArrayList<>();
+    public LocalDateTime endTime;
 
     public Epic(String title, String description) {
         super(title, description);
@@ -18,6 +22,19 @@ public class Epic extends Task {
         this.arraySubtask = arraySubtask;
     }
 
+    private String dateTimeToString() {
+        String resultStart = "notSpecified";
+        String resultEnd = "notSpecified";
+        String resultDuration = "notSpecified";
+        Optional<LocalDateTime> start = Optional.ofNullable(startTime);
+        Optional<LocalDateTime> end = Optional.ofNullable(endTime);
+        Optional<Duration> dur = Optional.ofNullable(duration);
+        if (start.isPresent()) resultStart = start.get().format(DATE_TIME_FORMATTER);
+        if (end.isPresent()) resultEnd = end.get().format(DATE_TIME_FORMATTER);
+        if (dur.isPresent()) resultDuration = String.valueOf(dur.get().toMinutes());
+        return String.format("%s,%s,%s", resultStart, resultEnd, resultDuration);
+    }
+
     @Override
     public String toString() {
         String subtaskList = "empty";
@@ -29,6 +46,7 @@ public class Epic extends Task {
             builder.append(arraySubtask.getLast());
             subtaskList = builder.toString();
         }
-        return String.format("%s,%s,%s,%s,%s,%s", id, typeTask, title, status, description, subtaskList);
+        return String.format("%s,%s,%s,%s,%s,%s,%s", id, typeTask, title, status, description, subtaskList,
+                dateTimeToString());
     }
 }

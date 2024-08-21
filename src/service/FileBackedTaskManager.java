@@ -16,7 +16,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private void save() {
         try (BufferedWriter buffer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
-            buffer.write("id,type,name,status,description,epic\n");
+            buffer.write("id,type,name,status,description,epic,startTime,endTime,duration\n");
             for (Task task : getAllTasks()) {
                 buffer.write(task.toString() + "\n");
             }
@@ -41,14 +41,18 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 if (TypeTask.TASK.equals(TypeTask.valueOf(parts[1]))) {
                     Task task = taskFromStringArray(parts);
                     manager.tasks.put(id, task);
+                    manager.getPrioritizedTasks().add(task);
                 }
                 if (TypeTask.EPIC.equals(TypeTask.valueOf(parts[1]))) {
                     Epic epic = epicFromStringArray(parts);
                     manager.epics.put(id, epic);
+                    manager.updateEpicDateTime(id);
+                    manager.getPrioritizedTasks().add(epic);
                 }
                 if (TypeTask.SUBTASK.equals(TypeTask.valueOf(parts[1]))) {
                     Subtask subtask = subtaskFromStringArray(parts);
                     manager.subtasks.put(id, subtask);
+
                 }
             }
             if (allId != -1) manager.allTaskId = allId;
@@ -67,7 +71,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     private static Task taskFromStringArray(String[] parts) {
-        Task task = new Task(parts[2], parts[4], Status.valueOf(parts[3]));
+        Task task = new Task(parts[2], parts[4], Status.valueOf(parts[3]), parts[5], Integer.parseInt(parts[7]));
         task.id = Integer.parseInt(parts[0]);
         return task;
     }
@@ -85,7 +89,8 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
     }
 
     private static Subtask subtaskFromStringArray(String[] parts) {
-        Subtask subtask = new Subtask(parts[2], parts[4], Status.valueOf(parts[3]));
+        Subtask subtask = new Subtask(parts[2], parts[4], Status.valueOf(parts[3]), parts[6],
+                Integer.parseInt(parts[8]));
         subtask.id = Integer.parseInt(parts[0]);
         subtask.setEpicId(Integer.parseInt(parts[5]));
         return subtask;
