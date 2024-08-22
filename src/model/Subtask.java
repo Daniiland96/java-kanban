@@ -1,7 +1,5 @@
 package model;
 
-import java.time.Duration;
-
 public class Subtask extends Task {
     private int epicId;
     public final TypeTask typeTask = TypeTask.SUBTASK;

@@ -3,8 +3,6 @@ import model.*;
 import service.*;
 
 import java.io.File;
-import java.time.Duration;
-import java.time.LocalDateTime;
 
 public class Main {
 
@@ -12,28 +10,34 @@ public class Main {
 
         File file = new File("manager.csv");
 
-//        TaskManager backedTaskManager = Managers.getDefault(file);
+        TaskManager backedTaskManager = Managers.getDefault(file);
 
-//        Task task = new Task("Task", "description", Status.NEW);
-//        Epic epic = new Epic("Epic", "description");
-//        Subtask subtask = new Subtask("Subtask", "description", Status.IN_PROGRESS);
-//        Subtask subtask2 = new Subtask("Subtask2", "description", Status.IN_PROGRESS);
+         Task task1 = new Task("Task", "description", Status.NEW, "10.05.24 10:00", 60);
+        Task task2 = new Task("Task", "description", Status.NEW, "10.05.24 12:00", 60);
+        Task task3 = new Task("Task", "description", Status.NEW, "10.05.24 14:00", 60);
 
-       /* backedTaskManager.createTask(task);
+        Epic epic = new Epic("Epic", "description");
+        Subtask subtask = new Subtask("Subtask", "description", Status.IN_PROGRESS,
+                "10.05.24 12:00", 60);
+        Subtask subtask2 = new Subtask("Subtask2", "description", Status.IN_PROGRESS,
+                "10.05.24 09:30", 60);
+
+
+        backedTaskManager.createTask(task1);
+//        backedTaskManager.createTask(task2);
+//        backedTaskManager.createTask(task3);
         backedTaskManager.createEpic(epic);
         backedTaskManager.createSubtask(epic.id, subtask);
         backedTaskManager.createSubtask(epic.id, subtask2);
 
-        TaskManager manager2 = Managers.getDefault(file);
+        System.out.println(backedTaskManager.getPrioritizedTasks());
+       /* System.out.println();
+        backedTaskManager.updateTask(task2.id, new Task("Task", "DDDDDDDDD", Status.NEW,
+                "10.05.24 09:00", 500));
+        System.out.println(backedTaskManager.getPrioritizedTasks());*/
+        /*backedTaskManager.createEpic(epic);
+      backedTaskManager.createSubtask(epic.id, subtask);
+        backedTaskManager.createSubtask(epic.id, subtask2);*/
 
-        System.out.println(backedTaskManager.getAnyTaskById(task.id).equals(manager2.getAnyTaskById(task.id)));
-        System.out.println(backedTaskManager.getAnyTaskById(epic.id).equals(manager2.getAnyTaskById(epic.id)));
-        System.out.println(backedTaskManager.getAnyTaskById(subtask.id).equals(manager2.getAnyTaskById(subtask.id)));
-        System.out.println(backedTaskManager.getAnyTaskById(subtask2.id).equals(manager2.getAnyTaskById(subtask2.id)));*/
-
-        LocalDateTime time = LocalDateTime.now();
-        int x = -5;
-        Duration test = Duration.ofMinutes(x);
-        System.out.println(test);
     }
 }

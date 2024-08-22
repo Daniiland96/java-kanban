@@ -2,6 +2,7 @@ package service;
 
 import model.*;
 
+import java.time.Duration;
 import java.util.*;
 
 public class InMemoryTaskManager implements TaskManager {
@@ -113,8 +114,9 @@ public class InMemoryTaskManager implements TaskManager {
         if (tasks.containsKey(taskId)) {
             newTask.id = taskId;
             if (isTaskCanAddToList(newTask, prioritizedTasks)) {
-                tasks.put(taskId, newTask);
+                prioritizedTasks.remove(tasks.get(taskId));
                 prioritizedTasks.add(newTask);
+                tasks.put(taskId, newTask);
             } else System.out.println("Время выполнения задачи пересекается с другими задачами.");
         } else System.out.println("Task, с указанным id, не найден.");
     }
@@ -144,8 +146,9 @@ public class InMemoryTaskManager implements TaskManager {
                 newSubtask.id = subtaskId;
                 int oldEpicId = subtasks.get(subtaskId).getEpicId();
                 newSubtask.setEpicId(oldEpicId);
-                subtasks.put(subtaskId, newSubtask);
+                prioritizedTasks.remove(subtasks.get(subtaskId));
                 prioritizedTasks.add(newSubtask);
+                subtasks.put(subtaskId, newSubtask);
                 updateEpicStatus(newSubtask.getEpicId());
                 updateEpicDateTime(newSubtask.getEpicId());
             } else System.out.println("Время выполнения задачи пересекается с другими задачами.");
@@ -214,6 +217,7 @@ public class InMemoryTaskManager implements TaskManager {
         historyManager.remove(id);
     }
 
+    @Override
     public Set<Task> getPrioritizedTasks() {
         return prioritizedTasks;
     }
@@ -267,7 +271,11 @@ public class InMemoryTaskManager implements TaskManager {
                     .toList();
             epic.startTime = sortSubtask.getFirst().startTime;
             epic.endTime = sortSubtask.getLast().getEndTime();
-            sortSubtask.forEach(subtask -> epic.duration.plus(subtask.duration));
+            long minutes = 0;
+            for (Subtask subtask : sortSubtask) {
+                minutes += subtask.duration.toMinutes();
+            }
+            epic.duration = Duration.ofMinutes(minutes);
         } else {
             epic.startTime = null;
             epic.endTime = null;
@@ -276,17 +284,20 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     private Boolean isDateTimeNotIntersects(Task testTask, Task otherTask) {
-        if (testTask.startTime.isAfter(otherTask.startTime) && testTask.startTime.isBefore(otherTask.getEndTime())
+        if ((testTask.startTime.isAfter(otherTask.startTime) && testTask.startTime.isBefore(otherTask.getEndTime()))
                 || testTask.startTime.equals(otherTask.startTime)) return false;
-        else if (testTask.getEndTime().isAfter(otherTask.startTime) && testTask.getEndTime().isBefore(otherTask.getEndTime())
+        else if ((testTask.getEndTime().isAfter(otherTask.startTime)
+                && testTask.getEndTime().isBefore(otherTask.getEndTime()))
                 || testTask.getEndTime().equals(otherTask.getEndTime())) return false;
+        else if (testTask.startTime.isBefore(otherTask.startTime)
+                && testTask.getEndTime().isAfter(otherTask.getEndTime())) return false;
         else return true;
     }
 
     private Boolean isTaskCanAddToList(Task newTask, Set<Task> prioritizedTasks) {
         if (prioritizedTasks.isEmpty()) return true;
         return !prioritizedTasks.stream()
-                .filter(newTask::equals)
+                .filter(task -> !newTask.equals(task))
                 .map(task -> isDateTimeNotIntersects(newTask, task))
                 .anyMatch(booleanValue -> booleanValue == false);
     }

@@ -4,6 +4,8 @@ import model.*;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
+import java.time.LocalDateTime;
 
 public class FileBackedTaskManager extends InMemoryTaskManager {
 
@@ -46,13 +48,12 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 if (TypeTask.EPIC.equals(TypeTask.valueOf(parts[1]))) {
                     Epic epic = epicFromStringArray(parts);
                     manager.epics.put(id, epic);
-                    manager.updateEpicDateTime(id);
                     manager.getPrioritizedTasks().add(epic);
                 }
                 if (TypeTask.SUBTASK.equals(TypeTask.valueOf(parts[1]))) {
                     Subtask subtask = subtaskFromStringArray(parts);
                     manager.subtasks.put(id, subtask);
-
+                    manager.getPrioritizedTasks().add(subtask);
                 }
             }
             if (allId != -1) manager.allTaskId = allId;
@@ -80,6 +81,16 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         Epic epic = new Epic(parts[2], parts[4]);
         epic.id = Integer.parseInt(parts[0]);
         epic.status = Status.valueOf(parts[3]);
+
+        if (parts[6].equals("notSpecified")) epic.startTime = null;
+        else epic.startTime = LocalDateTime.parse(parts[6], Task.DATE_TIME_FORMATTER);
+
+        if (parts[7].equals("notSpecified")) epic.endTime = null;
+        else epic.endTime = LocalDateTime.parse(parts[7], Task.DATE_TIME_FORMATTER);
+
+        if (parts[8].equals("notSpecified")) epic.duration = null;
+        else epic.duration = Duration.ofMinutes(Integer.parseInt(parts[6]));
+
         if (parts[5].equals("empty")) return epic;
         String[] subtaskIdArray = parts[5].split("/");
         for (String id : subtaskIdArray) {

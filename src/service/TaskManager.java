@@ -3,6 +3,7 @@ package service;
 import model.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 public interface TaskManager {
 
@@ -32,4 +33,5 @@ public interface TaskManager {
 
     void removeTaskFromHistory(int id);
 
+    Set<Task> getPrioritizedTasks();
 }

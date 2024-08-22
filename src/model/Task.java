@@ -3,7 +3,6 @@ package model;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Optional;
 
 public class Task {
     public int id = -1;
@@ -29,7 +28,6 @@ public class Task {
     }
 
     public LocalDateTime getEndTime() {
-        if(startTime == null || duration == null) return null;
         return startTime.plus(duration);
     }
 
