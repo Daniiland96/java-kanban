@@ -6,12 +6,13 @@ import java.util.ArrayList;
 import java.util.Optional;
 
 public class Epic extends Task {
-    public final TypeTask typeTask = TypeTask.EPIC;
+
     private ArrayList<Integer> arraySubtask = new ArrayList<>();
     public LocalDateTime endTime;
 
     public Epic(String title, String description) {
         super(title, description);
+        this.typeTask = TypeTask.EPIC;
     }
 
     public ArrayList<Integer> getArraySubtask() {

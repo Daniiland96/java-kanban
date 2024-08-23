@@ -17,11 +17,10 @@ public class FileBackedTaskManagerTest extends InMemoryTaskManagerTest {
     @Override
     @BeforeEach
     void createTaskManagerTest() {
+        super.createTaskManagerTest();
         try {
             taskFile = File.createTempFile("newFile", ".csv");
             taskManager = FileBackedTaskManager.loadFromFile(taskFile);
-            task = new Task("Task", "TaskType", Status.NEW);
-            epic = new Epic("Epic", "EpicType");
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка создания временного файла.");
         }
@@ -37,8 +36,12 @@ public class FileBackedTaskManagerTest extends InMemoryTaskManagerTest {
     public void saveToFile() throws IOException {
         taskManager.createTask(task);
         taskManager.createEpic(epic);
+        taskManager.createSubtask(epic.id, subtask);
         String fileString = Files.readString(taskFile.toPath());
-        String str = "id,type,name,status,description,epic\n1,TASK,Task,NEW,TaskType\n2,EPIC,Epic,NEW,EpicType,empty\n";
+        String str = "id,type,name,status,description,epic,startTime,endTime,duration\n" +
+                "1,TASK,Task,NEW,TaskType,20.08.24 10:00,20.08.24 11:00,60\n" +
+                "2,EPIC,Epic,NEW,EpicType,3,20.08.24 11:00,20.08.24 12:00,60\n" +
+                "3,SUBTASK,Subtask,NEW,SubtaskType,2,20.08.24 11:00,20.08.24 12:00,60\n";
         assertEquals(str, fileString);
     }
 
@@ -47,7 +50,7 @@ public class FileBackedTaskManagerTest extends InMemoryTaskManagerTest {
         taskManager.createTask(task);
         taskManager.createEpic(epic);
         FileBackedTaskManager taskManager2 = FileBackedTaskManager.loadFromFile(taskFile);
-        assertEquals(taskManager.getAnyTaskById(1), taskManager2.getAnyTaskById(1));
-        assertEquals(taskManager.getAnyTaskById(2), taskManager2.getAnyTaskById(2));
+        assertEquals(taskManager.getAnyTaskById(task.id), taskManager2.getAnyTaskById(task.id));
+        assertEquals(taskManager.getAnyTaskById(epic.id), taskManager2.getAnyTaskById(epic.id));
     }
 }

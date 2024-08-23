@@ -48,7 +48,6 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
                 if (TypeTask.EPIC.equals(TypeTask.valueOf(parts[1]))) {
                     Epic epic = epicFromStringArray(parts);
                     manager.epics.put(id, epic);
-                    manager.getPrioritizedTasks().add(epic);
                 }
                 if (TypeTask.SUBTASK.equals(TypeTask.valueOf(parts[1]))) {
                     Subtask subtask = subtaskFromStringArray(parts);
@@ -89,7 +88,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         else epic.endTime = LocalDateTime.parse(parts[7], Task.DATE_TIME_FORMATTER);
 
         if (parts[8].equals("notSpecified")) epic.duration = null;
-        else epic.duration = Duration.ofMinutes(Integer.parseInt(parts[6]));
+        else epic.duration = Duration.ofMinutes(Integer.parseInt(parts[8]));
 
         if (parts[5].equals("empty")) return epic;
         String[] subtaskIdArray = parts[5].split("/");

@@ -2,10 +2,10 @@ package model;
 
 public class Subtask extends Task {
     private int epicId;
-    public final TypeTask typeTask = TypeTask.SUBTASK;
 
     public Subtask(String title, String description, Status status, String startTime, int duration) {
         super(title, description, status, startTime, duration);
+        this.typeTask = TypeTask.SUBTASK;
     }
 
     public int getEpicId() {

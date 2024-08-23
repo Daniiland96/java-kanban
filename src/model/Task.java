@@ -9,7 +9,7 @@ public class Task {
     public String title;
     public String description;
     public Status status;
-    public final TypeTask typeTask = TypeTask.TASK;
+    public TypeTask typeTask;
     public LocalDateTime startTime;
     public Duration duration;
     public static final DateTimeFormatter DATE_TIME_FORMATTER = DateTimeFormatter.ofPattern("dd.MM.yy HH:mm");
@@ -18,6 +18,7 @@ public class Task {
         this.title = title;
         this.description = description;
         this.status = status;
+        this.typeTask = TypeTask.TASK;
         this.startTime = LocalDateTime.parse(startTime, DATE_TIME_FORMATTER);
         this.duration = Duration.ofMinutes(duration);
     }

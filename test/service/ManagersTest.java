@@ -27,7 +27,7 @@ class ManagersTest {
 
     @Test
     void managersCreateWorkerTaskManager() {
-        Task task = new Task("Task", "Task", Status.NEW);
+        Task task = new Task("Task", "Task", Status.NEW, "20.08.24 10:00", 60);
         taskManager.createTask(task);
         taskManager.getAnyTaskById(1);
         assertEquals(taskManager.tasks.size(), 1); // в tasks должен появиться 1 элемент
@@ -36,7 +36,7 @@ class ManagersTest {
 
     @Test
     void managersCreateWorkerBackedTaskManager() {
-        Task task = new Task("Task", "Task", Status.NEW);
+        Task task = new Task("Task", "Task", Status.NEW, "20.08.24 10:00", 60);
         backedTaskManager.createTask(task);
         backedTaskManager.getAnyTaskById(1);
         assertEquals(backedTaskManager.tasks.size(), 1); // в tasks должен появиться 1 элемент
