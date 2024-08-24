@@ -18,14 +18,16 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
 
     private void save() {
         try (BufferedWriter buffer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
+
             buffer.write("id,type,name,status,description,epic,startTime,endTime,duration\n");
             for (Task task : getAllTasks()) {
                 buffer.write(task.toString() + "\n");
             }
+
         } catch (FileNotFoundException e) {
             throw new ManagerSaveException("Файл не найден.");
         } catch (IOException e) {
-            throw new ManagerSaveException("Ошибка сохранения в файле.");
+            throw new ManagerSaveException("Ошибка сохранения в файл.");
         }
     }
 
@@ -59,7 +61,7 @@ public class FileBackedTaskManager extends InMemoryTaskManager {
         } catch (FileNotFoundException e) {
             throw new ManagerSaveException("Файл не найден.");
         } catch (IOException e) {
-            throw new ManagerSaveException("Ошибка сохранения в файле.");
+            throw new ManagerSaveException("Ошибка сохранения в файл.");
         } catch (NumberFormatException e) {
             throw new ManagerSaveException("Передан неверный формат.");
         }

@@ -91,4 +91,51 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
         taskManager.createSubtask(epic.id, subtask);
         assertEquals(epic.id, subtask.getEpicId());
     }
+
+    @Test
+    void epicUpdateStatusTest() {
+        taskManager.createEpic(epic);
+        assertEquals(epic.status, Status.NEW);
+
+        taskManager.createSubtask(epic.id, subtask);
+        assertEquals(epic.status, Status.NEW);
+
+        taskManager.updateSubtask(subtask.id, new Subtask("Subtask", "SubtaskType", Status.IN_PROGRESS,
+                "20.08.24 11:00", 60));
+        assertEquals(epic.status, Status.IN_PROGRESS);
+
+        taskManager.updateSubtask(subtask.id, new Subtask("Subtask", "SubtaskType", Status.DONE,
+                "20.08.24 11:00", 60));
+        assertEquals(epic.status, Status.DONE);
+
+        taskManager.createSubtask(epic.id, new Subtask("Subtask2", "SubtaskSecond", Status.NEW,
+                "22.08.24 10:00", 60));
+        assertEquals(epic.status, Status.IN_PROGRESS);
+    }
+
+    @Test
+    void intersectionOfDateTimeTest() {
+        taskManager.createTask(task);
+        assertEquals(taskManager.getPrioritizedTasks().size(), 1);
+        taskManager.createEpic(epic);
+        taskManager.createSubtask(epic.id, subtask);
+        assertEquals(taskManager.getPrioritizedTasks().size(), 2);
+        taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 09:30",
+                60));
+        taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 11:30",
+                60));
+        taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 09:00",
+                240));
+        taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 09:30",
+                60));
+        taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 10:00",
+                10));
+        taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 11:30",
+                30));
+        taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 10:10",
+                10));
+        taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 10:30",
+                60));
+        assertEquals(taskManager.getPrioritizedTasks().size(), 2);
+    }
 }

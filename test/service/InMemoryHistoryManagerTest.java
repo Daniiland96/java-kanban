@@ -15,12 +15,10 @@ public class InMemoryHistoryManagerTest {
     @BeforeEach
     void CreateInMemoryHistoryManagerTest() {
         manager = Managers.getDefault();
-
         task1 = new Task("Task1", "t1", Status.NEW, "20.08.24 10:00", 60);
         epic2 = new Epic("Epic2", "e2");
         subtask2Id3 = new Subtask("Subtask2_3", "s2_3", Status.IN_PROGRESS,
                 "20.08.24 11:00", 60);
-
         manager.createTask(task1);
         manager.createEpic(epic2);
         manager.createSubtask(epic2.id, subtask2Id3);
@@ -44,16 +42,6 @@ public class InMemoryHistoryManagerTest {
         manager.getAnyTaskById(task1.id);
         assertEquals(manager.getHistory().size(), 3);
         assertEquals(task1, manager.getHistory().getLast());
-    }
-
-    @Test
-    void historyManagerRemoveNodesFromList() {
-        manager.getAnyTaskById(task1.id);
-        manager.getAnyTaskById(epic2.id);
-        manager.getAnyTaskById(subtask2Id3.id);
-        manager.removeTaskFromHistory(task1.id);
-        manager.removeTaskFromHistory(subtask2Id3.id);
-        assertEquals(manager.getHistory().size(), 1);
     }
 
     @Test

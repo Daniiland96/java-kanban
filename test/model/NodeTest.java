@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 public class NodeTest {
     @Test
-    void NodesEqualIfTasksIdEqual(){
+    void NodesEqualIfTasksIdEqual() {
         Task task1 = new Task("Task1", "t1", Status.NEW,
                 "20.08.24 10:00", 60);
         Task task2 = new Task("Task2", "t2", Status.DONE,

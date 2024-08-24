@@ -5,7 +5,9 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.util.ArrayList;
 
@@ -27,13 +29,13 @@ public class FileBackedTaskManagerTest extends InMemoryTaskManagerTest {
     }
 
     @Test
-    public void loadEmptyFile() {
+    void loadEmptyFileTest() {
         ArrayList<Task> tasks = taskManager.getAllTasks();
         assertEquals(0, tasks.size());
     }
 
     @Test
-    public void saveToFile() throws IOException {
+    void saveToFileTest() throws IOException {
         taskManager.createTask(task);
         taskManager.createEpic(epic);
         taskManager.createSubtask(epic.id, subtask);
@@ -46,11 +48,27 @@ public class FileBackedTaskManagerTest extends InMemoryTaskManagerTest {
     }
 
     @Test
-    public void loadFromFile() {
+    void loadFromFileTest() {
         taskManager.createTask(task);
         taskManager.createEpic(epic);
         FileBackedTaskManager taskManager2 = FileBackedTaskManager.loadFromFile(taskFile);
         assertEquals(taskManager.getAnyTaskById(task.id), taskManager2.getAnyTaskById(task.id));
         assertEquals(taskManager.getAnyTaskById(epic.id), taskManager2.getAnyTaskById(epic.id));
+    }
+
+    @Test
+    void fileBackedTaskManagerExceptionTest() {
+        File notExistFile = new File("");
+        assertThrows(ManagerSaveException.class, () -> FileBackedTaskManager.loadFromFile(notExistFile));
+    }
+
+    @Test
+    void numberFormatExceptionTest() {
+        try (FileWriter writer = new FileWriter(taskFile, StandardCharsets.UTF_8)) {
+            writer.write("Неверный текст" + "\n" + "Неверный текст");
+        } catch (NumberFormatException | IOException e) {
+            throw new ManagerSaveException("Ошибка сохранения в файл.");
+        }
+        assertThrows(ManagerSaveException.class, () -> FileBackedTaskManager.loadFromFile(taskFile));
     }
 }

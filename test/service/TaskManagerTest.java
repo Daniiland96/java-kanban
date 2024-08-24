@@ -42,4 +42,10 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     abstract void subtaskHaveEpicId();
+
+    @Test
+    abstract void epicUpdateStatusTest();
+
+    @Test
+    abstract void intersectionOfDateTimeTest();
 }
