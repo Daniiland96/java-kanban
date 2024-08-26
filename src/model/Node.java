@@ -26,8 +26,8 @@ public class Node {
     public String toString() {
         return "Node{" +
                 "task = " + task +
-                ", nextTaskId = " + next.task.id +
-                ", previousTaskId = " + previous.task.id +
+                ", nextTaskId = " + next.task.getId() +
+                ", previousTaskId = " + previous.task.getId() +
                 '}';
     }
 }

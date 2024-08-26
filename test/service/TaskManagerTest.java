@@ -48,4 +48,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
 
     @Test
     abstract void intersectionOfDateTimeTest();
+
+    @Test
+    abstract void deleteMethodsTest();
 }

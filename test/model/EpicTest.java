@@ -7,9 +7,9 @@ class EpicTest {
     @Test
     void epicsWithSameIdAreEqual() {
         Epic epic1 = new Epic("Epic1", "EpicFirst");
-        epic1.id = 1;
+        epic1.setId(1);
         Epic epic2 = new Epic("Epic2", "EpicSecond");
-        epic2.id = 1;
+        epic2.setId(1);
         Assertions.assertEquals(epic1, epic2);
     }
 }

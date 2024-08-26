@@ -9,7 +9,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
-import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -30,7 +30,7 @@ public class FileBackedTaskManagerTest extends InMemoryTaskManagerTest {
 
     @Test
     void loadEmptyFileTest() {
-        ArrayList<Task> tasks = taskManager.getAllTasks();
+        List<Task> tasks = taskManager.getAllTasks();
         assertEquals(0, tasks.size());
     }
 
@@ -38,7 +38,7 @@ public class FileBackedTaskManagerTest extends InMemoryTaskManagerTest {
     void saveToFileTest() throws IOException {
         taskManager.createTask(task);
         taskManager.createEpic(epic);
-        taskManager.createSubtask(epic.id, subtask);
+        taskManager.createSubtask(epic.getId(), subtask);
         String fileString = Files.readString(taskFile.toPath());
         String str = "id,type,name,status,description,epic,startTime,endTime,duration\n" +
                 "1,TASK,Task,NEW,TaskType,20.08.24 10:00,20.08.24 11:00,60\n" +
@@ -52,8 +52,8 @@ public class FileBackedTaskManagerTest extends InMemoryTaskManagerTest {
         taskManager.createTask(task);
         taskManager.createEpic(epic);
         FileBackedTaskManager taskManager2 = FileBackedTaskManager.loadFromFile(taskFile);
-        assertEquals(taskManager.getAnyTaskById(task.id), taskManager2.getAnyTaskById(task.id));
-        assertEquals(taskManager.getAnyTaskById(epic.id), taskManager2.getAnyTaskById(epic.id));
+        assertEquals(taskManager.getAnyTaskById(task.getId()), taskManager2.getAnyTaskById(task.getId()));
+        assertEquals(taskManager.getAnyTaskById(epic.getId()), taskManager2.getAnyTaskById(epic.getId()));
     }
 
     @Test

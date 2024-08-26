@@ -29,10 +29,10 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
         taskManager.createEpic(epic);
         Subtask subtask1 = new Subtask("Subtask1", "SubtaskFirst", Status.NEW,
                 "21.08.24 10:00", 60);
-        taskManager.createSubtask(epic.id, subtask1);
+        taskManager.createSubtask(epic.getId(), subtask1);
         Subtask subtask2 = new Subtask("Subtask2", "SubtaskSecond", Status.NEW,
                 "22.08.24 10:00", 60);
-        taskManager.createSubtask(subtask2.id, subtask2); // в консоль выведет сообщение "model.Epic,
+        taskManager.createSubtask(subtask2.getId(), subtask2); // в консоль выведет сообщение "model.Epic,
         // с указанным id, не найден."
         assertEquals(taskManager.subtasks.size(), 1); // в subtasks должен быть только subtask1
     }
@@ -41,76 +41,76 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
     void taskManagerCreateAllTypeTaskAndReturnById() {
         taskManager.createTask(task);
         taskManager.createEpic(epic);
-        taskManager.createSubtask(epic.id, subtask);
-        assertEquals(taskManager.getAnyTaskById(task.id).typeTask, TypeTask.TASK);
-        assertEquals(taskManager.getAnyTaskById(epic.id).typeTask, TypeTask.EPIC);
-        assertEquals(taskManager.getAnyTaskById(subtask.id).typeTask, TypeTask.SUBTASK);
+        taskManager.createSubtask(epic.getId(), subtask);
+        assertEquals(taskManager.getAnyTaskById(task.getId()).getType(), TypeTask.TASK);
+        assertEquals(taskManager.getAnyTaskById(epic.getId()).getType(), TypeTask.EPIC);
+        assertEquals(taskManager.getAnyTaskById(subtask.getId()).getType(), TypeTask.SUBTASK);
     }
 
     @Test
     void createdIdDoNotConflictWithGenerated() {
         int id = 5;
-        task.id = id;
+        task.setId(id);
         taskManager.createTask(task);
-        assertNotEquals(taskManager.getAnyTaskById(task.id).id, id); // id изменился, значит конфликта нет
+        assertNotEquals(taskManager.getAnyTaskById(task.getId()).getId(), id); // id изменился, значит конфликта нет
     }
 
     @Test
     void taskManagerDoesNotChangeFields() {
         taskManager.createTask(task);
-        assertEquals(taskManager.getAnyTaskById(task.id).title, "Task");
-        assertEquals(taskManager.getAnyTaskById(task.id).description, "TaskType");
-        assertEquals(taskManager.getAnyTaskById(task.id).status, Status.NEW);
+        assertEquals(taskManager.getAnyTaskById(task.getId()).getTitle(), "Task");
+        assertEquals(taskManager.getAnyTaskById(task.getId()).getDescription(), "TaskType");
+        assertEquals(taskManager.getAnyTaskById(task.getId()).getStatus(), Status.NEW);
     }
 
     @Test
     void epicRemoveSubtaskIdWhichWasDeleted() {
         taskManager.createEpic(epic);
-        taskManager.createSubtask(epic.id, subtask);
+        taskManager.createSubtask(epic.getId(), subtask);
         assertEquals(epic.getArraySubtask().size(), 1);
-        taskManager.deleteAnyTaskById(subtask.id);
+        taskManager.deleteAnyTaskById(subtask.getId());
         assertEquals(epic.getArraySubtask().size(), 0);
     }
 
     @Test
     void getEpicsSubtasksTest() {
         taskManager.createEpic(epic);
-        taskManager.createSubtask(epic.id, new Subtask("Subtask1", "s1", Status.IN_PROGRESS,
+        taskManager.createSubtask(epic.getId(), new Subtask("Subtask1", "s1", Status.IN_PROGRESS,
                 "20.08.24 11:00", 60));
-        taskManager.createSubtask(epic.id, new Subtask("Subtask2", "s2", Status.DONE,
+        taskManager.createSubtask(epic.getId(), new Subtask("Subtask2", "s2", Status.DONE,
                 "20.08.24 12:00", 60)); // id 3
-        taskManager.createSubtask(epic.id, new Subtask("Subtask3", "s3", Status.NEW,
+        taskManager.createSubtask(epic.getId(), new Subtask("Subtask3", "s3", Status.NEW,
                 "20.08.24 13:00", 60));
         taskManager.deleteAnyTaskById(3);
-        assertEquals(taskManager.getEpicsSubtasks(epic.id).size(), 2);
+        assertEquals(taskManager.getEpicsSubtasks(epic.getId()).size(), 2);
     }
 
     @Test
     void subtaskHaveEpicId() {
         taskManager.createEpic(epic);
-        taskManager.createSubtask(epic.id, subtask);
-        assertEquals(epic.id, subtask.getEpicId());
+        taskManager.createSubtask(epic.getId(), subtask);
+        assertEquals(epic.getId(), subtask.getEpicId());
     }
 
     @Test
     void epicUpdateStatusTest() {
         taskManager.createEpic(epic);
-        assertEquals(epic.status, Status.NEW);
+        assertEquals(epic.getStatus(), Status.NEW);
 
-        taskManager.createSubtask(epic.id, subtask);
-        assertEquals(epic.status, Status.NEW);
+        taskManager.createSubtask(epic.getId(), subtask);
+        assertEquals(epic.getStatus(), Status.NEW);
 
-        taskManager.updateSubtask(subtask.id, new Subtask("Subtask", "SubtaskType", Status.IN_PROGRESS,
+        taskManager.updateSubtask(subtask.getId(), new Subtask("Subtask", "SubtaskType", Status.IN_PROGRESS,
                 "20.08.24 11:00", 60));
-        assertEquals(epic.status, Status.IN_PROGRESS);
+        assertEquals(epic.getStatus(), Status.IN_PROGRESS);
 
-        taskManager.updateSubtask(subtask.id, new Subtask("Subtask", "SubtaskType", Status.DONE,
+        taskManager.updateSubtask(subtask.getId(), new Subtask("Subtask", "SubtaskType", Status.DONE,
                 "20.08.24 11:00", 60));
-        assertEquals(epic.status, Status.DONE);
+        assertEquals(epic.getStatus(), Status.DONE);
 
-        taskManager.createSubtask(epic.id, new Subtask("Subtask2", "SubtaskSecond", Status.NEW,
+        taskManager.createSubtask(epic.getId(), new Subtask("Subtask2", "SubtaskSecond", Status.NEW,
                 "22.08.24 10:00", 60));
-        assertEquals(epic.status, Status.IN_PROGRESS);
+        assertEquals(epic.getStatus(), Status.IN_PROGRESS);
     }
 
     @Test
@@ -118,12 +118,17 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
         taskManager.createTask(task);
         assertEquals(taskManager.getPrioritizedTasks().size(), 1);
         taskManager.createEpic(epic);
-        taskManager.createSubtask(epic.id, subtask);
+        taskManager.createSubtask(epic.getId(), subtask);
         assertEquals(taskManager.getPrioritizedTasks().size(), 2);
+        taskManager.createSubtask(epic.getId(), new Subtask("Subtask", "SubtaskType", Status.IN_PROGRESS));
+        // size = 3
         taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 09:30",
                 60));
         taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 11:30",
                 60));
+
+        taskManager.createSubtask(epic.getId(), new Subtask("Subtask", "SubtaskType", Status.IN_PROGRESS));
+        // size = 4
         taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 09:00",
                 240));
         taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 09:30",
@@ -136,6 +141,29 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
                 10));
         taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 10:30",
                 60));
-        assertEquals(taskManager.getPrioritizedTasks().size(), 2);
+        taskManager.createTask(new Task("Task", "TaskType", Status.DONE));
+        // size = 5
+        assertEquals(taskManager.getPrioritizedTasks().size(), 5);
+    }
+
+    @Test
+    void deleteMethodsTest() {
+        taskManager.createTask(task);
+        taskManager.createTask(task);
+        taskManager.createEpic(epic);
+        taskManager.createSubtask(epic.getId(), subtask);
+        taskManager.createSubtask(epic.getId(), subtask);
+        assertEquals(taskManager.getAllTasks().size(), 5);
+
+        taskManager.deleteAllTask();
+        assertEquals(taskManager.getAllTasks().size(), 3);
+
+        taskManager.deleteAllSubtask();
+        assertEquals(taskManager.getAllTasks().size(), 1);
+
+        taskManager.createSubtask(epic.getId(), subtask);
+        taskManager.createSubtask(epic.getId(), subtask);
+        taskManager.deleteAllEpic();
+        assertEquals(taskManager.getAllTasks().size(), 0);
     }
 }

@@ -2,15 +2,19 @@ package service;
 
 import model.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public interface TaskManager {
 
-    ArrayList<Task> getAllTasks();
+    List<Task> getAllTasks();
 
     void deleteAllTasks();
+
+    void deleteAllTask();
+
+    void deleteAllEpic();
+
+    void deleteAllSubtask();
 
     Task getAnyTaskById(int id);
 
@@ -28,11 +32,11 @@ public interface TaskManager {
 
     void deleteAnyTaskById(int id);
 
-    ArrayList<Subtask> getEpicsSubtasks(int epicId);
+    List<Subtask> getEpicsSubtasks(int epicId);
 
     List<Task> getHistory();
 
     void removeTaskFromHistory(int id);
 
-    Set<Task> getPrioritizedTasks();
+    List<Task> getPrioritizedTasks();
 }
