@@ -16,13 +16,13 @@ public class InMemoryHistoryManager implements HistoryManager {
     public void add(Task task) {
         if (task == null) return;
         Node node;
-        if (nodeStore.containsKey(task.id)) {
-            node = nodeStore.get(task.id);
+        if (nodeStore.containsKey(task.getId())) {
+            node = nodeStore.get(task.getId());
             node.task = task;
             removeNode(node);
         } else {
             node = new Node(task);
-            nodeStore.put(task.id, node);
+            nodeStore.put(task.getId(), node);
         }
         smartLinkedList.linkLast(node);
     }

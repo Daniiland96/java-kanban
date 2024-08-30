@@ -13,7 +13,6 @@ public class Node {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-
         Node node = (Node) o;
         return task.equals(node.task);
     }
@@ -27,8 +26,8 @@ public class Node {
     public String toString() {
         return "Node{" +
                 "task = " + task +
-                ", nextTaskId = " + next.task.id +
-                ", previousTaskId = " + previous.task.id +
+                ", nextTaskId = " + next.task.getId() +
+                ", previousTaskId = " + previous.task.getId() +
                 '}';
     }
 }

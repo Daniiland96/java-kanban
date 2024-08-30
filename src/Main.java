@@ -12,21 +12,26 @@ public class Main {
 
         TaskManager backedTaskManager = Managers.getDefault(file);
 
-        Task task = new Task("Task", "description", Status.NEW);
-        Epic epic = new Epic("Epic", "description");
-        Subtask subtask = new Subtask("Subtask", "description", Status.IN_PROGRESS);
-        Subtask subtask2 = new Subtask("Subtask2", "description", Status.IN_PROGRESS);
+        Task task = new Task("Task", "TaskType", Status.NEW, "20.08.24 10:00", 60);
+        Epic epic = new Epic("Epic", "EpicType");
+        Subtask subtask = new Subtask("Subtask", "SubtaskType", Status.NEW,
+                "20.08.24 11:00", 60);
+        Task task1 = new Task("AAA", "AAA", Status.IN_PROGRESS);
+        Task task2 = new Task("BBB", "BBB", Status.DONE);
+        Subtask subtask1 = new Subtask("CCC", "CCC", Status.IN_PROGRESS);
+        Subtask subtask2 = new Subtask("Subtask", "SubtaskType", Status.NEW,
+                "20.08.24 13:00", 60);
 
-        backedTaskManager.createTask(task);
+        backedTaskManager.createTask(task1);
+        backedTaskManager.createTask(task2);
         backedTaskManager.createEpic(epic);
-        backedTaskManager.createSubtask(epic.id, subtask);
-        backedTaskManager.createSubtask(epic.id, subtask2);
+        backedTaskManager.createSubtask(epic.getId(), subtask2);
+        backedTaskManager.createSubtask(epic.getId(), subtask1);
+        backedTaskManager.createSubtask(epic.getId(), subtask);
+        backedTaskManager.createTask(task);
 
-        TaskManager manager2 = Managers.getDefault(file);
-
-        System.out.println(backedTaskManager.getAnyTaskById(task.id).equals(manager2.getAnyTaskById(task.id)));
-        System.out.println(backedTaskManager.getAnyTaskById(epic.id).equals(manager2.getAnyTaskById(epic.id)));
-        System.out.println(backedTaskManager.getAnyTaskById(subtask.id).equals(manager2.getAnyTaskById(subtask.id)));
-        System.out.println(backedTaskManager.getAnyTaskById(subtask2.id).equals(manager2.getAnyTaskById(subtask2.id)));
+        System.out.println(backedTaskManager.getAllTasks());
+        System.out.println();
+        System.out.println(backedTaskManager.getPrioritizedTasks());
     }
 }
