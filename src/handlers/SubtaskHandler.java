@@ -1,7 +1,7 @@
 package handlers;
 
 import com.sun.net.httpserver.HttpExchange;
-import model.Task;
+import model.Subtask;
 import model.TypeTask;
 import service.NotFoundException;
 import service.TaskManager;
@@ -12,9 +12,9 @@ import java.nio.charset.StandardCharsets;
 
 import static server.HttpTaskServer.gson;
 
-public class TaskHandler extends BaseHttpHandler {
+public class SubtaskHandler extends BaseHttpHandler {
 
-    public TaskHandler(TaskManager manager) {
+    public SubtaskHandler(TaskManager manager) {
         super(manager);
     }
 
@@ -25,14 +25,14 @@ public class TaskHandler extends BaseHttpHandler {
         switch (exchange.getRequestMethod()) {
             case "GET":
                 try {
-                    if (path.equals("/tasks")) {
-                        String allTasks = gson.toJson(manager.getAllTask());
-                        sendText(exchange, allTasks, 200);
+                    if (path.equals("/subtasks")) {
+                        String allSubtasks = gson.toJson(manager.getAllSubtask());
+                        sendText(exchange, allSubtasks, 200);
                     }
-                    if (pathSplit[1].equals("tasks") && pathSplit.length == 3) {
+                    if (pathSplit[1].equals("subtasks") && pathSplit.length == 3) {
                         String task;
                         int id = checkId(pathSplit[2]);
-                        if (manager.getAnyTaskById(id).getType() == TypeTask.TASK) {
+                        if (manager.getAnyTaskById(id).getType() == TypeTask.SUBTASK) {
                             task = gson.toJson(manager.getAnyTaskById(id));
                             sendText(exchange, task, 200);
                         } else {
@@ -49,25 +49,26 @@ public class TaskHandler extends BaseHttpHandler {
                 break;
             case "POST":
                 try {
-                    if (path.equals("/tasks")) {
+                    if (pathSplit.length == 4 && pathSplit[1].equals("subtasks") && pathSplit[2].equals("epic")) {
                         try {
+                            int epicId = checkId(pathSplit[3]);
                             String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
-                            Task task = gson.fromJson(body, Task.class);
-                            manager.createTask(task);
-                            sendText(exchange, gson.toJson("Task успешно создан."), 201);
+                            Subtask subtask = gson.fromJson(body, Subtask.class);
+                            manager.createSubtask(epicId, subtask);
+                            sendText(exchange, gson.toJson("Subtask успешно создан в Epic " + epicId), 201);
                         } catch (IOException e) {
-                            sendNotFound(exchange, gson.toJson("Ошибка при создании Task."));
+                            sendNotFound(exchange, gson.toJson("Ошибка при создании Subtask."));
                         }
                     }
-                    if (pathSplit[1].equals("tasks") && pathSplit.length == 3) {
+                    if (pathSplit[1].equals("subtasks") && pathSplit.length == 3) {
                         try {
                             int id = checkId(pathSplit[2]);
                             String body = new String(exchange.getRequestBody().readAllBytes(), StandardCharsets.UTF_8);
-                            Task task = gson.fromJson(body, Task.class);
-                            manager.updateTask(id, task);
-                            sendText(exchange, gson.toJson("Task успешно обновлен."), 201);
+                            Subtask subtask = gson.fromJson(body, Subtask.class);
+                            manager.updateSubtask(id, subtask);
+                            sendText(exchange, gson.toJson("Subtask успешно обновлен."), 201);
                         } catch (IOException e) {
-                            sendNotFound(exchange, gson.toJson("Ошибка при создании Task."));
+                            sendNotFound(exchange, gson.toJson("Ошибка при создании Subtask."));
                         }
                     } else sendNotFound(exchange, gson.toJson("Запрос не найден."));
                 } catch (NotFoundException e) {
@@ -78,9 +79,9 @@ public class TaskHandler extends BaseHttpHandler {
                 break;
             case "DELETE":
                 try {
-                    if (pathSplit[1].equals("tasks") && pathSplit.length == 3) {
+                    if (pathSplit[1].equals("subtasks") && pathSplit.length == 3) {
                         int id = checkId(pathSplit[2]);
-                        if (manager.getAnyTaskById(id).getType() == TypeTask.TASK) {
+                        if (manager.getAnyTaskById(id).getType() == TypeTask.SUBTASK) {
                             manager.deleteAnyTaskById(id);
                             sendText(exchange, gson.toJson("Задача успешно удалена."), 200);
                         } else {

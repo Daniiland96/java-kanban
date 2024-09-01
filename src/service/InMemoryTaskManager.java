@@ -1,6 +1,9 @@
 package service;
 
-import model.*;
+import model.Epic;
+import model.Status;
+import model.Subtask;
+import model.Task;
 
 import java.time.Duration;
 import java.util.*;
@@ -145,7 +148,6 @@ public class InMemoryTaskManager implements TaskManager {
             epics.put(epicId, newEpic);
             updateEpicStatus(epicId);
             updateEpicDateTime(epicId);
-
         } else throw new NotFoundException("Epic, с id: " + epicId + " не найден.");
     }
 

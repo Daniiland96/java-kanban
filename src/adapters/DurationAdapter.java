@@ -1,4 +1,4 @@
-package adaptersAndTokens;
+package adapters;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
@@ -11,7 +11,6 @@ public class DurationAdapter extends TypeAdapter<Duration> {
 
     @Override
     public void write(JsonWriter jsonWriter, Duration duration) throws IOException {
-
         try {
             jsonWriter.value(duration.toMinutes());
         } catch (NullPointerException e) {
