@@ -90,7 +90,9 @@ public class InMemoryTaskManager implements TaskManager {
         } else if (subtasks.containsKey(id)) {
             historyManager.add(subtasks.get(id));
             return subtasks.get(id);
-        } else throw new NotFoundException("Задача с id: " + id + " не найдена.");
+        } else {
+            throw new NotFoundException("Задача с id: " + id + " не найдена.");
+        }
     }
 
     @Override
@@ -99,7 +101,9 @@ public class InMemoryTaskManager implements TaskManager {
             newTask.setId(generateAllTaskId());
             tasks.put(newTask.getId(), newTask);
             prioritizedTasks.add(newTask);
-        } else throw new TimeIntersectingException("Время выполнения задачи пересекается с другими задачами.");
+        } else {
+            throw new TimeIntersectingException("Время выполнения задачи пересекается с другими задачами.");
+        }
     }
 
     @Override
@@ -112,8 +116,9 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public void createSubtask(int epicId, Subtask newSubtask) {
-        if (epics.isEmpty()) throw new NotFoundException("Нельзя создать Subtask, пока нет ни одного Epic.");
-        else if (epics.containsKey(epicId)) {
+        if (epics.isEmpty()) {
+            throw new NotFoundException("Нельзя создать Subtask, пока нет ни одного Epic.");
+        } else if (epics.containsKey(epicId)) {
             if (isTaskCanAddToList(newSubtask, prioritizedTasks)) {
                 newSubtask.setEpicId(epicId);
                 newSubtask.setId(generateAllTaskId());
@@ -123,8 +128,12 @@ public class InMemoryTaskManager implements TaskManager {
                 epic.getArraySubtask().add(newSubtask.getId());
                 updateEpicStatus(epicId);
                 updateEpicDateTime(epicId);
-            } else throw new TimeIntersectingException("Время выполнения задачи пересекается с другими задачами.");
-        } else throw new NotFoundException("Epic, с id: " + epicId + " не найден.");
+            } else {
+                throw new TimeIntersectingException("Время выполнения задачи пересекается с другими задачами.");
+            }
+        } else {
+            throw new NotFoundException("Epic, с id: " + epicId + " не найден.");
+        }
     }
 
     @Override
@@ -135,8 +144,12 @@ public class InMemoryTaskManager implements TaskManager {
                 prioritizedTasks.remove(tasks.get(taskId));
                 prioritizedTasks.add(newTask);
                 tasks.put(taskId, newTask);
-            } else throw new TimeIntersectingException("Время выполнения задачи пересекается с другими задачами.");
-        } else throw new NotFoundException("Task, с id: " + taskId + " не найден.");
+            } else {
+                throw new TimeIntersectingException("Время выполнения задачи пересекается с другими задачами.");
+            }
+        } else {
+            throw new NotFoundException("Task, с id: " + taskId + " не найден.");
+        }
     }
 
     @Override
@@ -148,13 +161,16 @@ public class InMemoryTaskManager implements TaskManager {
             epics.put(epicId, newEpic);
             updateEpicStatus(epicId);
             updateEpicDateTime(epicId);
-        } else throw new NotFoundException("Epic, с id: " + epicId + " не найден.");
+        } else {
+            throw new NotFoundException("Epic, с id: " + epicId + " не найден.");
+        }
     }
 
     @Override
     public void updateSubtask(int subtaskId, Subtask newSubtask) {
-        if (epics.isEmpty()) throw new NotFoundException("Список Epic и Subtask пуст.");
-        else if (subtasks.containsKey(subtaskId)) {
+        if (epics.isEmpty()) {
+            throw new NotFoundException("Список Epic и Subtask пуст.");
+        } else if (subtasks.containsKey(subtaskId)) {
             newSubtask.setId(subtaskId);
             if (isTaskCanAddToList(newSubtask, prioritizedTasks)) {
                 int oldEpicId = subtasks.get(subtaskId).getEpicId();
@@ -164,8 +180,12 @@ public class InMemoryTaskManager implements TaskManager {
                 subtasks.put(subtaskId, newSubtask);
                 updateEpicStatus(newSubtask.getEpicId());
                 updateEpicDateTime(newSubtask.getEpicId());
-            } else throw new TimeIntersectingException("Время выполнения задачи пересекается с другими задачами.");
-        } else throw new NotFoundException("Subtask, с id: " + subtaskId + " не найден.");
+            } else {
+                throw new TimeIntersectingException("Время выполнения задачи пересекается с другими задачами.");
+            }
+        } else {
+            throw new NotFoundException("Subtask, с id: " + subtaskId + " не найден.");
+        }
     }
 
     @Override
@@ -202,7 +222,9 @@ public class InMemoryTaskManager implements TaskManager {
             updateEpicStatus(epicId);
             updateEpicDateTime(epicId);
 
-        } else throw new NotFoundException("Задача, с id: " + id + " не найден.");
+        } else {
+            throw new NotFoundException("Задача, с id: " + id + " не найден.");
+        }
     }
 
     @Override

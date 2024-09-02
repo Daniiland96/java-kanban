@@ -1,5 +1,6 @@
 package server;
 
+import com.google.gson.Gson;
 import model.Epic;
 import model.Status;
 import model.Subtask;
@@ -16,6 +17,7 @@ public class BaseServerTest {
     protected Subtask subtask1;
     protected Subtask subtask2;
     protected TaskManager manager;
+    protected Gson gson;
 
     @BeforeEach
     void startServerTest() {
@@ -28,7 +30,8 @@ public class BaseServerTest {
                 "20.08.24 11:00", 60);
 
         HttpTaskServer.startServer();
-        manager = HttpTaskServer.manager;
+        gson = HttpTaskServer.getGson();
+        manager = HttpTaskServer.getManager();
     }
 
     @AfterEach

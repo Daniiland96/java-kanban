@@ -16,12 +16,12 @@ import java.time.LocalDateTime;
 
 public class HttpTaskServer {
     private static final int PORT = 8080;
-    public static final Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
+    private static Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter())
             .registerTypeAdapter(Duration.class, new DurationAdapter()).setPrettyPrinting().create();
-    public static HttpServer server;
-    public static TaskManager manager;
+    private static HttpServer server;
+    private static TaskManager manager;
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         startServer();
         stopServer();
     }
@@ -46,5 +46,13 @@ public class HttpTaskServer {
 
     public static void stopServer() {
         server.stop(1);
+    }
+
+    public static Gson getGson() {
+        return gson;
+    }
+
+    public static TaskManager getManager() {
+        return manager;
     }
 }

@@ -1,9 +1,9 @@
 
 package server;
 
-import tokens.ListTaskTypeToken;
-import model.*;
+import model.Task;
 import org.junit.jupiter.api.Test;
+import tokens.ListTaskTypeToken;
 
 import java.io.IOException;
 import java.net.URI;
@@ -13,7 +13,6 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static server.HttpTaskServer.gson;
 
 public class HistoryServerTest extends BaseServerTest {
 

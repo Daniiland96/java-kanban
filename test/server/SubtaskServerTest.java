@@ -1,8 +1,8 @@
 package server;
 
-import tokens.ListSubtaskTypeToken;
-import model.*;
+import model.Subtask;
 import org.junit.jupiter.api.Test;
+import tokens.ListSubtaskTypeToken;
 
 import java.io.IOException;
 import java.net.URI;
@@ -12,7 +12,6 @@ import java.net.http.HttpResponse;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static server.HttpTaskServer.gson;
 
 public class SubtaskServerTest extends BaseServerTest {
 
