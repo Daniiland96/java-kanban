@@ -8,6 +8,12 @@ public interface TaskManager {
 
     List<Task> getAllTasks();
 
+    List<Task> getAllTask();
+
+    List<Task> getAllEpic();
+
+    List<Task> getAllSubtask();
+
     void deleteAllTasks();
 
     void deleteAllTask();

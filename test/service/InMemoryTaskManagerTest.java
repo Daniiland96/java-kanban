@@ -20,20 +20,23 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
     @Test
     void epicCannotBeAddItself() {
         taskManager.createEpic(epic);
-        // taskManager.createSubtask(epic.id, (model.Subtask) epic); // нельзя создать model.Subtask типа model.Epic
+        // taskManager.createSubtask(epic.id, epic); // нельзя создать Subtask типа Epic
         assertEquals(taskManager.subtasks.size(), 0);
     }
 
     @Test
     void canNotMakeSubtaskTheEpic() {
-        taskManager.createEpic(epic);
-        Subtask subtask1 = new Subtask("Subtask1", "SubtaskFirst", Status.NEW,
-                "21.08.24 10:00", 60);
-        taskManager.createSubtask(epic.getId(), subtask1);
-        Subtask subtask2 = new Subtask("Subtask2", "SubtaskSecond", Status.NEW,
-                "22.08.24 10:00", 60);
-        taskManager.createSubtask(subtask2.getId(), subtask2); // в консоль выведет сообщение "model.Epic,
-        // с указанным id, не найден."
+        try {
+            taskManager.createEpic(epic);
+            Subtask subtask1 = new Subtask("Subtask1", "SubtaskFirst", Status.NEW,
+                    "21.08.24 10:00", 60);
+            taskManager.createSubtask(epic.getId(), subtask1);
+            Subtask subtask2 = new Subtask("Subtask2", "SubtaskSecond", Status.NEW,
+                    "22.08.24 10:00", 60);
+            taskManager.createSubtask(subtask2.getId(), subtask2);
+        } catch (NotFoundException e) {
+            System.out.println(e.getMessage());
+        }
         assertEquals(taskManager.subtasks.size(), 1); // в subtasks должен быть только subtask1
     }
 
@@ -122,27 +125,66 @@ public class InMemoryTaskManagerTest extends TaskManagerTest<InMemoryTaskManager
         assertEquals(taskManager.getPrioritizedTasks().size(), 2);
         taskManager.createSubtask(epic.getId(), new Subtask("Subtask", "SubtaskType", Status.IN_PROGRESS));
         // size = 3
-        taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 09:30",
-                60));
-        taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 11:30",
-                60));
-
-        taskManager.createSubtask(epic.getId(), new Subtask("Subtask", "SubtaskType", Status.IN_PROGRESS));
-        // size = 4
-        taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 09:00",
-                240));
-        taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 09:30",
-                60));
-        taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 10:00",
-                10));
-        taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 11:30",
-                30));
-        taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 10:10",
-                10));
-        taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 10:30",
-                60));
-        taskManager.createTask(new Task("Task", "TaskType", Status.DONE));
-        // size = 5
+        try {
+            taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 09:30",
+                    60));
+        } catch (TimeIntersectingException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 11:30",
+                    60));
+        } catch (TimeIntersectingException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            taskManager.createSubtask(epic.getId(), new Subtask("Subtask", "SubtaskType", Status.IN_PROGRESS));
+            // size = 4
+        } catch (TimeIntersectingException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 09:00",
+                    240));
+        } catch (TimeIntersectingException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 09:30",
+                    60));
+        } catch (TimeIntersectingException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 10:00",
+                    10));
+        } catch (TimeIntersectingException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 11:30",
+                    30));
+        } catch (TimeIntersectingException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 10:10",
+                    10));
+        } catch (TimeIntersectingException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            taskManager.createTask(new Task("Task", "TaskType", Status.NEW, "20.08.24 10:30",
+                    60));
+        } catch (TimeIntersectingException e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+            taskManager.createTask(new Task("Task", "TaskType", Status.DONE));
+            // size = 5
+        } catch (TimeIntersectingException e) {
+            System.out.println(e.getMessage());
+        }
         assertEquals(taskManager.getPrioritizedTasks().size(), 5);
     }
 
